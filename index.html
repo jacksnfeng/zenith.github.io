@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>正衡（广东）土地房地产评估有限公司</title>
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { font-family: "PingFang SC", "Microsoft YaHei", "Helvetica Neue", Arial, sans-serif; color: #333; line-height: 1.6; }
+
+/* ── Color Variables ── */
+:root {
+  --primary: #1a3a5c;
+  --primary-light: #2a5a8c;
+  --gold: #c9a96e;
+  --gold-light: #e0c98f;
+  --bg-light: #f5f7fa;
+  --white: #ffffff;
+  --text: #333333;
+  --text-light: #666666;
+  --shadow: 0 4px 20px rgba(0,0,0,0.08);
+}
+
+/* ── Navigation ── */
+.navbar {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+  background: rgba(26,58,92,0.95); backdrop-filter: blur(10px);
+  padding: 0 2rem; height: 70px; display: flex; align-items: center; justify-content: space-between;
+  transition: box-shadow 0.3s;
+}
+.navbar.scrolled { box-shadow: 0 2px 20px rgba(0,0,0,0.3); }
+.nav-logo { color: var(--white); font-size: 1.2rem; font-weight: 700; text-decoration: none; display: flex; align-items: center; gap: 0.5rem; }
+.nav-logo .logo-icon { width: 36px; height: 36px; background: var(--gold); border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; font-weight: 900; color: var(--primary); }
+.nav-links { display: flex; gap: 2rem; list-style: none; }
+.nav-links a { color: rgba(255,255,255,0.85); text-decoration: none; font-size: 0.95rem; transition: color 0.2s; position: relative; }
+.nav-links a:hover { color: var(--gold); }
+.nav-links a::after { content: ''; position: absolute; bottom: -4px; left: 0; width: 0; height: 2px; background: var(--gold); transition: width 0.3s; }
+.nav-links a:hover::after { width: 100%; }
+.hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; background: none; border: none; padding: 4px; }
+.hamburger span { display: block; width: 24px; height: 2px; background: var(--white); transition: 0.3s; }
+.hamburger.active span:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
+.hamburger.active span:nth-child(2) { opacity: 0; }
+.hamburger.active span:nth-child(3) { transform: rotate(-45deg) translate(5px, -5px); }
+
+/* ── Hero ── */
+.hero {
+  min-height: 100vh; display: flex; align-items: center; justify-content: center; text-align: center;
+  background: linear-gradient(135deg, #0d1f33 0%, #1a3a5c 40%, #2a5a8c 100%);
+  position: relative; overflow: hidden; padding: 2rem;
+}
+.hero::before {
+  content: ''; position: absolute; top: -50%; right: -50%; width: 100%; height: 200%;
+  background: radial-gradient(ellipse, rgba(201,169,110,0.1) 0%, transparent 60%);
+  animation: heroGlow 8s ease-in-out infinite alternate;
+}
+@keyframes heroGlow { from { transform: rotate(0deg); } to { transform: rotate(10deg) translate(5%, 3%); } }
+.hero-content { position: relative; z-index: 1; max-width: 800px; }
+.hero-badge { display: inline-block; padding: 0.4rem 1.2rem; border: 1px solid var(--gold); border-radius: 50px; color: var(--gold); font-size: 0.85rem; margin-bottom: 1.5rem; letter-spacing: 2px; }
+.hero h1 { font-size: 3rem; color: var(--white); margin-bottom: 0.8rem; font-weight: 800; letter-spacing: 2px; }
+.hero h2 { font-size: 1.3rem; color: var(--gold-light); font-weight: 400; margin-bottom: 1.5rem; letter-spacing: 4px; }
+.hero-desc { color: rgba(255,255,255,0.7); font-size: 1.05rem; max-width: 600px; margin: 0 auto 2.5rem; line-height: 1.8; }
+.hero-btns { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+.btn { padding: 0.8rem 2rem; border-radius: 6px; font-size: 1rem; text-decoration: none; transition: all 0.3s; cursor: pointer; border: none; font-family: inherit; }
+.btn-primary { background: var(--gold); color: var(--primary); font-weight: 600; }
+.btn-primary:hover { background: var(--gold-light); transform: translateY(-2px); box-shadow: 0 6px 20px rgba(201,169,110,0.4); }
+.btn-outline { border: 1px solid rgba(255,255,255,0.4); color: var(--white); background: transparent; }
+.btn-outline:hover { border-color: var(--gold); color: var(--gold); }
+.hero-stats { display: flex; justify-content: center; gap: 3rem; margin-top: 3.5rem; padding-top: 2.5rem; border-top: 1px solid rgba(255,255,255,0.1); }
+.hero-stat { text-align: center; }
+.hero-stat .num { font-size: 2.2rem; font-weight: 800; color: var(--gold); }
+.hero-stat .label { font-size: 0.85rem; color: rgba(255,255,255,0.6); margin-top: 0.3rem; }
+
+/* ── Section Shared ── */
+.section { padding: 5rem 2rem; }
+.section-header { text-align: center; margin-bottom: 3.5rem; }
+.section-header h2 { font-size: 2rem; color: var(--primary); margin-bottom: 0.5rem; }
+.section-header .en { font-size: 0.8rem; color: var(--gold); letter-spacing: 4px; text-transform: uppercase; margin-bottom: 0.5rem; }
+.section-header p { color: var(--text-light); max-width: 600px; margin: 0.8rem auto 0; }
+.section-header .divider { width: 50px; height: 3px; background: var(--gold); margin: 1rem auto; border-radius: 2px; }
+
+/* ── About ── */
+.about { background: var(--white); }
+.about-grid { max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; }
+.about-image { background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%); border-radius: 12px; height: 400px; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; }
+.about-image::before { content: ''; position: absolute; width: 200px; height: 200px; border: 2px solid rgba(201,169,110,0.3); border-radius: 50%; top: 50%; left: 50%; transform: translate(-50%, -50%); }
+.about-image::after { content: ''; position: absolute; width: 300px; height: 300px; border: 1px solid rgba(201,169,110,0.15); border-radius: 50%; top: 50%; left: 50%; transform: translate(-50%, -50%); }
+.about-image-text { color: var(--gold); font-size: 3.5rem; font-weight: 800; letter-spacing: 6px; z-index: 1; }
+.about-text h3 { font-size: 1.6rem; color: var(--primary); margin-bottom: 1rem; }
+.about-text p { color: var(--text-light); margin-bottom: 1rem; line-height: 1.9; }
+.about-tags { display: flex; flex-wrap: wrap; gap: 0.6rem; margin-top: 1.5rem; }
+.about-tags span { padding: 0.4rem 1rem; background: var(--bg-light); border-radius: 50px; font-size: 0.85rem; color: var(--primary); border: 1px solid #e0e6ed; }
+
+/* ── Services ── */
+.services { background: var(--bg-light); }
+.services-grid { max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.5rem; }
+.service-card { background: var(--white); border-radius: 12px; padding: 2rem; transition: all 0.3s; border: 1px solid #eef1f5; position: relative; overflow: hidden; }
+.service-card:hover { transform: translateY(-6px); box-shadow: var(--shadow); border-color: var(--gold); }
+.service-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: var(--gold); transform: scaleX(0); transition: transform 0.3s; }
+.service-card:hover::before { transform: scaleX(1); }
+.service-icon { width: 56px; height: 56px; background: linear-gradient(135deg, var(--primary), var(--primary-light)); border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-bottom: 1.2rem; }
+.service-icon svg { width: 28px; height: 28px; fill: var(--gold); }
+.service-card h3 { font-size: 1.15rem; color: var(--primary); margin-bottom: 0.6rem; }
+.service-card p { font-size: 0.9rem; color: var(--text-light); line-height: 1.7; }
+
+/* ── Advantages ── */
+.advantages { background: var(--white); }
+.adv-grid { max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 2rem; }
+.adv-card { text-align: center; padding: 2.5rem 1.5rem; border-radius: 12px; transition: all 0.3s; }
+.adv-card:hover { background: var(--bg-light); }
+.adv-num { font-size: 2.5rem; font-weight: 800; color: var(--gold); margin-bottom: 0.5rem; }
+.adv-card h3 { font-size: 1.1rem; color: var(--primary); margin-bottom: 0.6rem; }
+.adv-card p { font-size: 0.9rem; color: var(--text-light); line-height: 1.7; }
+
+/* ── Honors ── */
+.honors { background: linear-gradient(135deg, var(--primary) 0%, #0d1f33 100%); }
+.honors .section-header h2 { color: var(--white); }
+.honors .section-header p { color: rgba(255,255,255,0.6); }
+.honors-grid { max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.5rem; }
+.honor-card { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 2rem; text-align: center; transition: all 0.3s; }
+.honor-card:hover { background: rgba(255,255,255,0.1); transform: translateY(-4px); }
+.honor-icon { font-size: 2.5rem; margin-bottom: 1rem; }
+.honor-card h3 { color: var(--white); font-size: 1rem; margin-bottom: 0.5rem; }
+.honor-card p { color: rgba(255,255,255,0.5); font-size: 0.85rem; line-height: 1.6; }
+
+/* ── Contact ── */
+.contact { background: var(--bg-light); }
+.contact-grid { max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; }
+.contact-info { display: flex; flex-direction: column; gap: 1.5rem; }
+.contact-item { display: flex; gap: 1rem; align-items: flex-start; }
+.contact-icon { width: 48px; height: 48px; min-width: 48px; background: var(--primary); border-radius: 10px; display: flex; align-items: center; justify-content: center; }
+.contact-icon svg { width: 22px; height: 22px; fill: var(--gold); }
+.contact-item h4 { font-size: 0.95rem; color: var(--primary); margin-bottom: 0.2rem; }
+.contact-item p { font-size: 0.9rem; color: var(--text-light); }
+.contact-form { background: var(--white); border-radius: 12px; padding: 2rem; box-shadow: var(--shadow); }
+.contact-form h3 { font-size: 1.3rem; color: var(--primary); margin-bottom: 1.5rem; }
+.form-group { margin-bottom: 1rem; }
+.form-group label { display: block; font-size: 0.85rem; color: var(--text); margin-bottom: 0.3rem; font-weight: 500; }
+.form-group input, .form-group textarea { width: 100%; padding: 0.7rem 1rem; border: 1px solid #dde2e8; border-radius: 8px; font-size: 0.95rem; font-family: inherit; transition: border-color 0.2s; background: #fafbfc; }
+.form-group input:focus, .form-group textarea:focus { outline: none; border-color: var(--primary); background: var(--white); }
+.form-group textarea { resize: vertical; min-height: 100px; }
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+.btn-submit { width: 100%; padding: 0.8rem; background: var(--primary); color: var(--white); border: none; border-radius: 8px; font-size: 1rem; font-weight: 600; cursor: pointer; transition: all 0.3s; font-family: inherit; }
+.btn-submit:hover { background: var(--primary-light); }
+
+/* ── Footer ── */
+.footer { background: #0d1f33; color: rgba(255,255,255,0.5); padding: 3rem 2rem 1.5rem; }
+.footer-grid { max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 2rem; padding-bottom: 2rem; border-bottom: 1px solid rgba(255,255,255,0.08); }
+.footer-brand h3 { color: var(--white); font-size: 1.1rem; margin-bottom: 0.8rem; }
+.footer-brand p { font-size: 0.85rem; line-height: 1.7; }
+.footer-col h4 { color: var(--gold); font-size: 0.9rem; margin-bottom: 1rem; letter-spacing: 1px; }
+.footer-col ul { list-style: none; }
+.footer-col li { margin-bottom: 0.5rem; }
+.footer-col a { color: rgba(255,255,255,0.5); text-decoration: none; font-size: 0.85rem; transition: color 0.2s; }
+.footer-col a:hover { color: var(--gold); }
+.footer-bottom { max-width: 1100px; margin: 1.5rem auto 0; text-align: center; font-size: 0.8rem; }
+
+/* ── Animations ── */
+.fade-up { opacity: 0; transform: translateY(30px); transition: opacity 0.6s ease, transform 0.6s ease; }
+.fade-up.visible { opacity: 1; transform: translateY(0); }
+
+/* ── Mobile ── */
+@media (max-width: 768px) {
+  .hamburger { display: flex; }
+  .nav-links {
+    position: fixed; top: 70px; left: 0; right: 0; background: rgba(26,58,92,0.98);
+    flex-direction: column; align-items: center; gap: 0; padding: 1rem 0;
+    transform: translateY(-100%); opacity: 0; pointer-events: none; transition: 0.3s;
+  }
+  .nav-links.open { transform: translateY(0); opacity: 1; pointer-events: all; }
+  .nav-links li { width: 100%; text-align: center; }
+  .nav-links a { display: block; padding: 0.8rem; font-size: 1rem; }
+  .hero h1 { font-size: 2rem; }
+  .hero h2 { font-size: 1rem; }
+  .hero-stats { gap: 1.5rem; }
+  .hero-stat .num { font-size: 1.6rem; }
+  .about-grid { grid-template-columns: 1fr; gap: 2rem; }
+  .about-image { height: 250px; }
+  .about-image-text { font-size: 2.5rem; }
+  .contact-grid { grid-template-columns: 1fr; }
+  .form-row { grid-template-columns: 1fr; }
+  .footer-grid { grid-template-columns: 1fr 1fr; }
+  .section { padding: 3.5rem 1.2rem; }
+  .section-header h2 { font-size: 1.6rem; }
+}
+</style>
+</head>
+<body>
+
+<!-- Navigation -->
+<nav class="navbar" id="navbar">
+  <a href="#" class="nav-logo">
+    <span class="logo-icon">正</span>
+    正衡评估
+  </a>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="#about">关于我们</a></li>
+    <li><a href="#services">核心服务</a></li>
+    <li><a href="#advantages">团队优势</a></li>
+    <li><a href="#honors">资质荣誉</a></li>
+    <li><a href="#contact">联系我们</a></li>
+  </ul>
+  <button class="hamburger" id="hamburger" aria-label="菜单">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- Hero -->
+<section class="hero" id="home">
+  <div class="hero-content">
+    <div class="hero-badge">专业 &middot; 公正 &middot; 高效</div>
+    <h1>正衡（广东）土地房地产评估有限公司</h1>
+    <h2>ZHENGHENG (GUANGDONG) REAL ESTATE APPRAISAL</h2>
+    <p class="hero-desc">深耕土地与房地产评估领域，以专业实力和严谨态度，为政府机构、金融机构、企业及个人客户提供权威、公正的评估服务。</p>
+    <div class="hero-btns">
+      <a href="#services" class="btn btn-primary">了解我们的服务</a>
+      <a href="#contact" class="btn btn-outline">免费咨询</a>
+    </div>
+    <div class="hero-stats">
+      <div class="hero-stat"><div class="num" data-target="20">0</div><div class="label">年行业经验</div></div>
+      <div class="hero-stat"><div class="num" data-target="5000">0</div><div class="label">+ 服务案例</div></div>
+      <div class="hero-stat"><div class="num" data-target="100">0</div><div class="label">% 公正率</div></div>
+      <div class="hero-stat"><div class="num" data-target="98">0</div><div class="label">% 客户满意度</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- About -->
+<section class="section about" id="about">
+  <div class="section-header fade-up">
+    <div class="en">ABOUT US</div>
+    <h2>关于正衡</h2>
+    <div class="divider"></div>
+    <p>值得信赖的土地与房地产评估专家</p>
+  </div>
+  <div class="about-grid">
+    <div class="about-image fade-up">
+      <div class="about-image-text">正衡</div>
+    </div>
+    <div class="about-text fade-up">
+      <h3>以专业立身，以公正立信</h3>
+      <p>正衡（广东）土地房地产评估有限公司是一家经广东省相关主管部门批准设立的专业评估机构，具备土地评估、房地产评估及相关咨询服务的综合资质。</p>
+      <p>公司汇聚了一批具有丰富实践经验和深厚理论功底的专业评估师团队，秉承"客观、公正、科学、高效"的服务理念，致力于为客户提供全面、精准、可靠的评估服务。</p>
+      <p>多年来，公司服务范围覆盖广东省各主要城市，业务涉及土地出让、房地产交易、企业改制、抵押贷款、司法鉴定、征收补偿等多个领域，赢得了广大客户的高度认可与信赖。</p>
+      <div class="about-tags">
+        <span>土地评估</span>
+        <span>房地产评估</span>
+        <span>资产评估</span>
+        <span>司法鉴定</span>
+        <span>咨询顾问</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Services -->
+<section class="section services" id="services">
+  <div class="section-header fade-up">
+    <div class="en">OUR SERVICES</div>
+    <h2>核心服务</h2>
+    <div class="divider"></div>
+    <p>全方位、多领域的专业评估与咨询服务</p>
+  </div>
+  <div class="services-grid">
+    <div class="service-card fade-up">
+      <div class="service-icon">
+        <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+      </div>
+      <h3>土地评估</h3>
+      <p>提供土地出让、转让、抵押、征收补偿等各类土地使用权价值评估服务，评估结果权威可靠。</p>
+    </div>
+    <div class="service-card fade-up">
+      <div class="service-icon">
+        <svg viewBox="0 0 24 24"><path d="M3 21h18M3 7v1a3 3 0 006 0V7m0 1a3 3 0 006 0V7m0 1a3 3 0 006 0V7H3l2-4h14l2 4M5 21V10.87M19 21V10.87"/></svg>
+      </div>
+      <h3>房地产评估</h3>
+      <p>涵盖住宅、商业、工业、办公等各类房地产的市场价值评估，为交易、抵押、保险等提供依据。</p>
+    </div>
+    <div class="service-card fade-up">
+      <div class="service-icon">
+        <svg viewBox="0 0 24 24"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/></svg>
+      </div>
+      <h3>资产评估</h3>
+      <p>为企业改制、合资合作、产权交易等提供整体资产评估和单项资产评估服务。</p>
+    </div>
+    <div class="service-card fade-up">
+      <div class="service-icon">
+        <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z M14 2v6h6 M16 13H8 M16 17H8 M10 9H8"/></svg>
+      </div>
+      <h3>司法鉴定评估</h3>
+      <p>接受法院、仲裁机构委托，提供涉诉房地产及资产的价值鉴定评估服务。</p>
+    </div>
+    <div class="service-card fade-up">
+      <div class="service-icon">
+        <svg viewBox="0 0 24 24"><path d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+      </div>
+      <h3>征收补偿评估</h3>
+      <p>为政府征收、拆迁补偿提供专业评估，保障各方合法权益，促进征收工作顺利推进。</p>
+    </div>
+    <div class="service-card fade-up">
+      <div class="service-icon">
+        <svg viewBox="0 0 24 24"><path d="M8 14v3m4-3v3m4-3v3M3 21h18M3 10h18M3 7l9-4 9 4M4 10h16v11H4V10z"/></svg>
+      </div>
+      <h3>咨询顾问</h3>
+      <p>提供房地产市场分析、投资可行性研究、项目策划等专业咨询服务，助力科学决策。</p>
+    </div>
+  </div>
+</section>
+
+<!-- Advantages -->
+<section class="section advantages" id="advantages">
+  <div class="section-header fade-up">
+    <div class="en">WHY CHOOSE US</div>
+    <h2>团队优势</h2>
+    <div class="divider"></div>
+    <p>专业铸就品质，服务赢得信赖</p>
+  </div>
+  <div class="adv-grid">
+    <div class="adv-card fade-up">
+      <div class="adv-num">01</div>
+      <h3>资质完备</h3>
+      <p>持有土地评估、房地产评估等完备执业资质，评估报告具备法律效力，获各级政府和金融机构广泛认可。</p>
+    </div>
+    <div class="adv-card fade-up">
+      <div class="adv-num">02</div>
+      <h3>精英团队</h3>
+      <p>汇聚注册房地产估价师、土地估价师、资产评估师等高素质专业人才，核心团队成员均拥有十年以上从业经验。</p>
+    </div>
+    <div class="adv-card fade-up">
+      <div class="adv-num">03</div>
+      <h3>丰富经验</h3>
+      <p>累计完成数千项评估项目，涵盖各类复杂评估场景，积累了丰富的实践经验和广泛的行业资源。</p>
+    </div>
+    <div class="adv-card fade-up">
+      <div class="adv-num">04</div>
+      <h3>服务高效</h3>
+      <p>建立标准化作业流程和严格的质量控制体系，确保评估报告的准确性、及时性，急客户之所急。</p>
+    </div>
+  </div>
+</section>
+
+<!-- Honors -->
+<section class="section honors" id="honors">
+  <div class="section-header fade-up">
+    <div class="en">HONORS &amp; QUALIFICATIONS</div>
+    <h2>资质荣誉</h2>
+    <div class="divider"></div>
+    <p>权威资质，值得托付</p>
+  </div>
+  <div class="honors-grid">
+    <div class="honor-card fade-up">
+      <div class="honor-icon">&#127942;</div>
+      <h3>土地评估资质</h3>
+      <p>经省级以上自然资源主管部门备案，具备执业范围内各类土地评估资格。</p>
+    </div>
+    <div class="honor-card fade-up">
+      <div class="honor-icon">&#127970;</div>
+      <h3>房地产评估资质</h3>
+      <p>持有房地产估价机构备案证书，具备从事各类房地产估价业务的法定资格。</p>
+    </div>
+    <div class="honor-card fade-up">
+      <div class="honor-icon">&#127891;</div>
+      <h3>行业会员单位</h3>
+      <p>广东省房地产估价师与经纪人学会、土地估价师协会会员单位。</p>
+    </div>
+    <div class="honor-card fade-up">
+      <div class="honor-icon">&#128142;</div>
+      <h3>优质服务荣誉</h3>
+      <p>多次获评行业优质服务机构，客户满意度持续保持在行业领先水平。</p>
+    </div>
+  </div>
+</section>
+
+<!-- Contact -->
+<section class="section contact" id="contact">
+  <div class="section-header fade-up">
+    <div class="en">CONTACT US</div>
+    <h2>联系我们</h2>
+    <div class="divider"></div>
+    <p>期待与您合作，为您提供专业评估服务</p>
+  </div>
+  <div class="contact-grid">
+    <div class="contact-info fade-up">
+      <div class="contact-item">
+        <div class="contact-icon">
+          <svg viewBox="0 0 24 24"><path d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+        </div>
+        <div>
+          <h4>公司地址</h4>
+          <p>广东省（详细地址请联系我们获取）</p>
+        </div>
+      </div>
+      <div class="contact-item">
+        <div class="contact-icon">
+          <svg viewBox="0 0 24 24"><path d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>
+        </div>
+        <div>
+          <h4>联系电话</h4>
+          <p>请来电咨询（工作日 9:00-18:00）</p>
+        </div>
+      </div>
+      <div class="contact-item">
+        <div class="contact-icon">
+          <svg viewBox="0 0 24 24"><path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+        </div>
+        <div>
+          <h4>电子邮箱</h4>
+          <p>请通过表单留言，我们将尽快回复</p>
+        </div>
+      </div>
+      <div class="contact-item">
+        <div class="contact-icon">
+          <svg viewBox="0 0 24 24"><path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+        </div>
+        <div>
+          <h4>工作时间</h4>
+          <p>周一至周五 9:00 - 18:00<br>周六、周日可预约</p>
+        </div>
+      </div>
+    </div>
+    <div class="contact-form fade-up">
+      <h3>在线留言</h3>
+      <form id="contactForm" onsubmit="handleSubmit(event)">
+        <div class="form-row">
+          <div class="form-group">
+            <label>您的姓名</label>
+            <input type="text" placeholder="请输入姓名" required>
+          </div>
+          <div class="form-group">
+            <label>联系电话</label>
+            <input type="tel" placeholder="请输入手机号" required>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>电子邮箱</label>
+          <input type="email" placeholder="请输入邮箱地址">
+        </div>
+        <div class="form-group">
+          <label>咨询内容</label>
+          <textarea placeholder="请描述您的评估需求，我们将尽快与您联系..."></textarea>
+        </div>
+        <button type="submit" class="btn-submit">提交留言</button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer class="footer">
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <h3>正衡（广东）土地房地产评估有限公司</h3>
+      <p>深耕行业多年，以专业实力和严谨态度，为客户提供权威、公正的评估服务。立足广东，服务全国，致力于成为最受信赖的评估机构。</p>
+    </div>
+    <div class="footer-col">
+      <h4>核心服务</h4>
+      <ul>
+        <li><a href="#services">土地评估</a></li>
+        <li><a href="#services">房地产评估</a></li>
+        <li><a href="#services">资产评估</a></li>
+        <li><a href="#services">咨询顾问</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>快速链接</h4>
+      <ul>
+        <li><a href="#about">关于我们</a></li>
+        <li><a href="#advantages">团队优势</a></li>
+        <li><a href="#honors">资质荣誉</a></li>
+        <li><a href="#contact">联系我们</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>业务范围</h4>
+      <ul>
+        <li><a href="#services">征收补偿评估</a></li>
+        <li><a href="#services">司法鉴定评估</a></li>
+        <li><a href="#services">抵押贷款评估</a></li>
+        <li><a href="#services">市场分析咨询</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>&copy; 2024 正衡（广东）土地房地产评估有限公司 版权所有 &nbsp;|&nbsp; 粤ICP备XXXXXXXX号</p>
+  </div>
+</footer>
+
+<script>
+// Navbar scroll effect
+const navbar = document.getElementById('navbar');
+window.addEventListener('scroll', () => {
+  navbar.classList.toggle('scrolled', window.scrollY > 50);
+});
+
+// Mobile menu
+const hamburger = document.getElementById('hamburger');
+const navLinks = document.getElementById('navLinks');
+hamburger.addEventListener('click', () => {
+  hamburger.classList.toggle('active');
+  navLinks.classList.toggle('open');
+});
+navLinks.querySelectorAll('a').forEach(link => {
+  link.addEventListener('click', () => {
+    hamburger.classList.remove('active');
+    navLinks.classList.remove('open');
+  });
+});
+
+// Scroll animations
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+    }
+  });
+}, { threshold: 0.15 });
+document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+
+// Counter animation
+function animateCounters() {
+  document.querySelectorAll('.hero-stat .num').forEach(el => {
+    const target = +el.getAttribute('data-target');
+    const duration = 2000;
+    const start = performance.now();
+    function update(now) {
+      const progress = Math.min((now - start) / duration, 1);
+      const eased = 1 - Math.pow(1 - progress, 3);
+      el.textContent = Math.floor(target * eased);
+      if (progress < 1) requestAnimationFrame(update);
+      else el.textContent = target;
+    }
+    requestAnimationFrame(update);
+  });
+}
+const heroObserver = new IntersectionObserver((entries) => {
+  if (entries[0].isIntersecting) { animateCounters(); heroObserver.disconnect(); }
+}, { threshold: 0.5 });
+heroObserver.observe(document.querySelector('.hero-stats'));
+
+// Form handler
+function handleSubmit(e) {
+  e.preventDefault();
+  const btn = e.target.querySelector('.btn-submit');
+  btn.textContent = '提交成功！';
+  btn.style.background = '#27ae60';
+  setTimeout(() => { btn.textContent = '提交留言'; btn.style.background = ''; e.target.reset(); }, 3000);
+}
+</script>
+
+</body>
+</html>
